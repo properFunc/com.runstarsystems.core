@@ -1,0 +1,32 @@
+{
+  "name": "RunstarSystems.ECS.OfflineBootstrap",
+  "rootNamespace": "RunstarSystems.ECS",
+  "references": [
+    "Unity.Entities",
+    "Unity.Collections",
+    "RunstarSystems.ECS.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "!RUNSTAR_NETCODE_PACKAGE_PRESENT",
+    "!CUSTOM_BOOTSTRAP_PACKAGE_PRESENT"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.runstarsystems.netcode",
+      "expression": "[0.0.0,999.0.0]",
+      "define": "RUNSTAR_NETCODE_PACKAGE_PRESENT"
+    },
+    {
+      "name": "com.custom.bootstrap",
+      "expression": "[0.0.0,999.0.0]",
+      "define": "CUSTOM_BOOTSTRAP_PACKAGE_PRESENT"
+    }
+  ],
+  "noEngineReferences": false
+}

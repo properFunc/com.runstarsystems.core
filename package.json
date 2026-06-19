@@ -1,0 +1,31 @@
+{
+  "name": "com.runstarsystems.ecs",
+  "version": "1.0.3",
+  "displayName": "Runstar ECS",
+  "description": "Ordered ECS group helpers and samples for Unity ECS projects.",
+  "unity": "6000.0",
+  "author": {
+    "name": "Runstar Systems"
+  },
+  "dependencies": {
+    "com.unity.entities": "1.4.7",
+    "com.unity.mathematics": "1.3.2"
+  },
+  "samples": [
+    {
+      "displayName": "PriorityGroupSample",
+      "description": "Shows how to use absolute order for entities",
+      "path": "./Samples~/InputPipelineExample"
+    },
+    {
+      "displayName": "DataBakingSample",
+      "description": "Uses authors and bakers to connect unity data to ecs automagically",
+      "path": "./Samples~/ProperComponentExample"
+    },
+    {
+      "displayName": "InheritOrganzierSample",
+      "description": "Shows how build your own organizer and also how inherit attribute works",
+      "path": "./Samples~/InheritDummyExample"
+    }
+  ]
+}

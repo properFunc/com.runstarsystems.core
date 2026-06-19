@@ -1,0 +1,19 @@
+{
+  "name": "RunstarSystems.ECS.Order",
+  "rootNamespace": "RunstarSystems.ECS",
+  "references": [
+    "Unity.Entities",
+    "Unity.Mathematics",
+    "Unity.Collections",
+    "RunstarSystems.ECS.Core"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
