@@ -1,5 +1,5 @@
 # Changelog
-
+** This changelog as of now is maintained by AI and is unreviewed. Take this more as a summary than a real changelog. May be removed and properly taken care of once changes aren't so durastic. **
 ## 1.0.3
 
 ### Added
