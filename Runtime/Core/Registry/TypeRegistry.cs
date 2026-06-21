@@ -332,7 +332,7 @@ namespace RunstarSystems.ECS.Registry
         *   And checks to see if the specific
         *   attribute exsists on that type
         */
-        internal IReadOnlyList<Attribute> FindAttributes(
+        public IReadOnlyList<Attribute> FindAttributes(
                 Type inspected_type,
                 Type attribute_base_type)
         {
@@ -392,7 +392,7 @@ namespace RunstarSystems.ECS.Registry
         *   Heavy function that bruteforce searches through
         *   each attribute type list and ignores duplicates
         */
-        internal List<Type> GetAllUniqueTypes()
+        public List<Type> GetAllUniqueTypes()
         {
             HashSet<Type> unique_types =
                     new HashSet<Type>();
