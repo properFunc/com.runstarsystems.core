@@ -328,6 +328,56 @@ namespace RunstarSystems.ECS.Registry
         }
 
         /*
+        *   This is a duplicate function serving a slightly different purpose
+        *   the duplication is a reminance of splitting the cache and type registry
+        *
+        *   Could be placed in the context system or in its own static class
+        *   but honestly should be fine.
+        */
+        private static bool ContainsMatch(
+                IReadOnlyList<metadata.RegistryMetadata> matches,
+                metadata.RegistryMetadata new_match)
+        {
+            for (int match_index = 0;
+                    match_index < matches.Count;
+                    match_index++)
+            {
+                metadata.RegistryMetadata existing =
+                        matches[match_index];
+
+                if (existing.MatchedType != new_match.MatchedType)
+                {
+                    continue;
+                }
+
+                if (existing.SourceType != new_match.SourceType)
+                {
+                    continue;
+                }
+
+                if (existing.KeyType != new_match.KeyType)
+                {
+                    continue;
+                }
+
+                if (existing.IsInherited != new_match.IsInherited)
+                {
+                    continue;
+                }
+
+                if (existing.Metadata.GetType()
+                        != new_match.Metadata.GetType())
+                {
+                    continue;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /*
         *   Grabs every attribute from a type
         *   And checks to see if the specific
         *   attribute exsists on that type
@@ -423,53 +473,47 @@ namespace RunstarSystems.ECS.Registry
         }
 
         /*
-        *   This is a duplicate function serving a slightly different purpose
-        *   the duplication is a reminance of splitting the cache and type registry
-        *
-        *   Could be placed in the context system or in its own static class
-        *   but honestly should be fine.
+        *   Gets all types matching specific metadata
+        *   Filtered match
         */
-        private static bool ContainsMatch(
-                IReadOnlyList<metadata.RegistryMetadata> matches,
-                metadata.RegistryMetadata new_match)
+        public IReadOnlyList<metadata.RegistryMetadata> GetAllMatches()
         {
-            for (int match_index = 0;
-                    match_index < matches.Count;
-                    match_index++)
+            if (metadata_map.Count == 0)
             {
-                metadata.RegistryMetadata existing =
-                        matches[match_index];
-
-                if (existing.MatchedType != new_match.MatchedType)
-                {
-                    continue;
-                }
-
-                if (existing.SourceType != new_match.SourceType)
-                {
-                    continue;
-                }
-
-                if (existing.KeyType != new_match.KeyType)
-                {
-                    continue;
-                }
-
-                if (existing.IsInherited != new_match.IsInherited)
-                {
-                    continue;
-                }
-
-                if (existing.Metadata.GetType()
-                        != new_match.Metadata.GetType())
-                {
-                    continue;
-                }
-
-                return true;
+                return Array.Empty<metadata.RegistryMetadata>();
             }
 
-            return false;
+            List<metadata.RegistryMetadata> all_matches =
+                    new List<metadata.RegistryMetadata>();
+
+            foreach (KeyValuePair<Type, List<metadata.RegistryMetadata>> pair
+                    in metadata_map)
+            {
+                List<metadata.RegistryMetadata> matches =
+                        pair.Value;
+
+                if (matches == null)
+                {
+                    continue;
+                }
+
+                for (int match_index = 0;
+                        match_index < matches.Count;
+                        match_index++)
+                {
+                    metadata.RegistryMetadata match =
+                            matches[match_index];
+
+                    if (match.MatchedType == null)
+                    {
+                        continue;
+                    }
+
+                    all_matches.Add(match);
+                }
+            }
+
+            return all_matches;
         }
     }
 }
