@@ -255,6 +255,31 @@ namespace RunstarSystems.ECS.Organizers
             return true;
         }
 
+        private static void RegisterOrderedGroups(
+                World world,
+                ComponentSystemGroup parent_group,
+                List<metadata.OrderedGroupInfo> ordered_groups)
+        {
+            for (int group_index = 0;
+                    group_index < ordered_groups.Count;
+                    group_index++)
+            {
+                Type group_type = ordered_groups[group_index].group_type;
+
+                if (world.GetOrCreateSystemManaged(group_type)
+                        is not ComponentSystemGroup child_group)
+                {
+                    Debug.LogWarning(
+                            "Runstar ordered group was not a ComponentSystemGroup: " +
+                            group_type.FullName);
+
+                    continue;
+                }
+
+                AddGroupToParent(parent_group, child_group);
+            }
+        }
+
         /*
         *   Adds the system to the world under parent group.
         */
