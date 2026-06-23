@@ -1,5 +1,7 @@
 using System;
 
+using group = RunstarSystems.ECS.Groups;
+
 namespace RunstarSystems.ECS.Attributes
 {
     public interface IGroupOrderAttribute
@@ -7,21 +9,41 @@ namespace RunstarSystems.ECS.Attributes
         int Order { get; }
     }
 
-    /*
-    *   @EXAMPLE
-    *               [ECSUpdateGroupOrder(100)]
-    *               public partial class UpdateExampleGroup : ComponentSystemGroup {}
-    */
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public sealed class ECSUpdateGroupOrderAttribute :
+    public abstract class ECSGroupOrderAttribute :
             Attribute,
             IGroupOrderAttribute
     {
         public int Order { get; }
 
-        public ECSUpdateGroupOrderAttribute(int groupOrder)
+        public Type PipelineGroupType { get; }
+
+        protected ECSGroupOrderAttribute(
+                int group_order,
+                Type pipeline_group_type)
         {
-            Order = groupOrder;
+            Order = group_order;
+            PipelineGroupType = pipeline_group_type;
+        }
+    }
+
+    /*
+    *   @EXAMPLE
+    *               [ECSUpdateGroupOrder(100)]
+    *               public partial class UpdateExampleGroup : ComponentSystemGroup {}
+    */
+    [AttributeUsage(
+            AttributeTargets.Class,
+            AllowMultiple = false,
+            Inherited = true)]
+    public sealed class ECSUpdateGroupOrderAttribute :
+            ECSGroupOrderAttribute
+    {
+        public ECSUpdateGroupOrderAttribute(
+                int group_order)
+                : base(
+                        group_order,
+                        typeof(group.RunstarUpdatePipelineGroup))
+        {
         }
     }
 
@@ -30,16 +52,19 @@ namespace RunstarSystems.ECS.Attributes
     *               [ECSFixedGroupOrder(100)]
     *               public partial class FixedExampleGroup : ComponentSystemGroup {}
     */
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(
+            AttributeTargets.Class,
+            AllowMultiple = false,
+            Inherited = true)]
     public sealed class ECSFixedGroupOrderAttribute :
-            Attribute,
-            IGroupOrderAttribute
+            ECSGroupOrderAttribute
     {
-        public int Order { get; }
-
-        public ECSFixedGroupOrderAttribute(int groupOrder)
+        public ECSFixedGroupOrderAttribute(
+                int group_order)
+                : base(
+                        group_order,
+                        typeof(group.RunstarFixedPipelineGroup))
         {
-            Order = groupOrder;
         }
     }
 
@@ -48,16 +73,19 @@ namespace RunstarSystems.ECS.Attributes
     *               [ECSLateGroupOrder(100)]
     *               public partial class LateExampleGroup : ComponentSystemGroup {}
     */
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(
+            AttributeTargets.Class,
+            AllowMultiple = false,
+            Inherited = true)]
     public sealed class ECSLateGroupOrderAttribute :
-            Attribute,
-            IGroupOrderAttribute
+            ECSGroupOrderAttribute
     {
-        public int Order { get; }
-
-        public ECSLateGroupOrderAttribute(int groupOrder)
+        public ECSLateGroupOrderAttribute(
+                int group_order)
+                : base(
+                        group_order,
+                        typeof(group.RunstarLatePipelineGroup))
         {
-            Order = groupOrder;
         }
     }
 }
