@@ -87,8 +87,16 @@ namespace RunstarSystems.ECS.Admin.Organizers
                 metadata.RegistryMetadata parent_match =
                         parent_matches[parent_match_index];
 
+                if (parent_match.Metadata is not Attribute attribute)
+                {
+                    continue;
+                }
+
+                Type concrete_attribute_type =
+                        attribute.GetType();
+
                 context.TypeRegistry.AddMatch(
-                        parent_match.KeyType,
+                        concrete_attribute_type,
                         child_type,
                         parent_match.SourceType,
                         parent_match.Metadata,
