@@ -110,19 +110,52 @@ namespace RunstarSystems.ECS.Admin.Organizers
                 return;
             }
 
-            if (!typeof(ComponentSystemBase).IsAssignableFrom(child_type))
+            bool is_managed_system =
+                    typeof(ComponentSystemBase).IsAssignableFrom(child_type);
+
+            bool is_unmanaged_system =
+                    typeof(ISystem).IsAssignableFrom(child_type);
+
+            if (!is_managed_system && !is_unmanaged_system)
             {
                 Debug.LogError(
-                        "InheritFromGroup child must be a ComponentSystemBase: "
+                        "InheritFromGroup child must be a ComponentSystemBase or ISystem: "
                         + child_type.FullName);
 
                 return;
             }
 
-            ComponentSystemBase child_system =
-                    world.GetOrCreateSystemManaged(child_type);
+            if (is_managed_system)
+            {
+                ComponentSystemBase child_system =
+                        world.GetOrCreateSystemManaged(child_type);
 
-            if (child_system == null)
+                if (child_system == null)
+                {
+                    Debug.LogError(
+                            "Could not create child system: "
+                            + child_type.FullName);
+
+                    return;
+                }
+
+                if (parent_group == child_system)
+                {
+                    Debug.LogError(
+                            "Cannot add ECS group/system to itself: "
+                            + child_type.FullName);
+
+                    return;
+                }
+
+                parent_group.AddSystemToUpdateList(child_system);
+                return;
+            }
+
+            SystemHandle child_handle =
+                    world.GetOrCreateSystem(child_type);
+
+            if (child_handle == SystemHandle.Null)
             {
                 Debug.LogError(
                         "Could not create child system: "
@@ -131,16 +164,7 @@ namespace RunstarSystems.ECS.Admin.Organizers
                 return;
             }
 
-            if (parent_group == child_system)
-            {
-                Debug.LogError(
-                        "Cannot add ECS group/system to itself: "
-                        + child_type.FullName);
-
-                return;
-            }
-
-            parent_group.AddSystemToUpdateList(child_system);
+            parent_group.AddSystemToUpdateList(child_handle);
         }
     }
 }

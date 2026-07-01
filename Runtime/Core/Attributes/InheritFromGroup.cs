@@ -3,7 +3,7 @@ using System;
 namespace RunstarSystems.ECS.Attributes
 {
     [AttributeUsage(
-            AttributeTargets.Class,
+            AttributeTargets.Class | AttributeTargets.Struct,
             AllowMultiple = false,
             Inherited = false)]
     public sealed class InheritFromGroupAttribute : Attribute
